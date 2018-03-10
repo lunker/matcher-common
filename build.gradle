@@ -1,0 +1,46 @@
+group 'org.lunker'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    maven { url "https://repo.spring.io/milestone"}
+}
+
+ext {
+    springBootVersion = '2.0.0.M7'
+    springVersion = '2.0.0.M7'
+    slf4jVersion = '1.7.21'
+    log4j2Version = '2.5'
+    commonsLogging = '1.2'
+    swagger = '2.8.0'
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+    // Spring Data JPA
+    compileOnly("org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}")
+    compileOnly("com.h2database:h2:1.4.196")
+    compileOnly group: 'org.json', name: 'json', version: '20180130'
+}
+
+task deploy {
+    // just run 'deploy' task once
+}
+
+task toBackend(type: Copy) {
+    from (buildDir.toString() +'/libs')
+    into ('/Users/voiceloco/work/matcher-backend/libs')
+}
+
+task toBatch(type: Copy) {
+    from (buildDir.toString() +'/libs')
+    into ('/Users/voiceloco/work/matcher-batch/libs')
+}
+
+deploy.dependsOn toBackend
+deploy.dependsOn toBatch
+
